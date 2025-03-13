@@ -30,7 +30,9 @@ def find_most_frequent_index(nums: List[int]) -> Optional[int]:
     # Find the maximum frequency
     max_freq = max(freq_counter.values())
     
-    # Find the first index of the most frequent number
+    # Find the first index of the first most frequent number
+    seen = set()
     for i, num in enumerate(nums):
-        if freq_counter[num] == max_freq:
+        if freq_counter[num] == max_freq and num not in seen:
             return i
+        seen.add(num)

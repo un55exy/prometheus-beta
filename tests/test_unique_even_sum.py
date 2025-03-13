@@ -24,4 +24,4 @@ def test_sum_unique_even_numbers_types():
     assert sum_unique_even_numbers([-2, 2, 3, -4, 4]) == 0
     
     # Large numbers
-    assert sum_unique_even_numbers([10000, 20000, 10000, 30000]) == 20000
+    assert sum_unique_even_numbers([10000, 20000, 10000, 30000]) == 50000

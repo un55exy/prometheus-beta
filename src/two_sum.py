@@ -20,12 +20,12 @@ def two_sum(numbers, target_sum):
         >>> two_sum([], 10)
         False
     """
-    # Handle edge cases
-    if len(numbers) < 2:
-        return False
-
     # Use a set to track numbers we've seen
     seen = set()
+
+    # Special case for empty or single-element list
+    if len(numbers) < 2:
+        return False
 
     # Iterate through the numbers
     for num in numbers:

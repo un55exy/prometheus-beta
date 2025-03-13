@@ -14,17 +14,17 @@ def sum_unique_even_numbers(numbers):
         >>> sum_unique_even_numbers([1, 3, 5])
         0
         >>> sum_unique_even_numbers([2, 4, 6, 2, 4])
-        0
+        6
     """
-    # Group even and odd numbers
-    unique_even_map = {}
+    # Count occurrences of each even number
+    even_counts = {}
     for num in numbers:
         if num % 2 == 0:
-            unique_even_map[num] = unique_even_map.get(num, 0) + 1
+            even_counts[num] = even_counts.get(num, 0) + 1
     
-    # Sum only unique even numbers
+    # Sum unique even numbers (those appearing exactly once)
     unique_even_sum = sum(
-        num for num, count in unique_even_map.items() 
+        num for num, count in even_counts.items() 
         if count == 1
     )
     

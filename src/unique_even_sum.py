@@ -23,8 +23,8 @@ def sum_unique_even_numbers(numbers):
     
     # Sum unique even numbers (occurring exactly once)
     unique_even_sum = sum(
-        num for num in set(numbers)  # Use set to get unique numbers
-        if num % 2 == 0 and number_counts[num] == 1
+        num for num in numbers 
+        if num % 2 == 0 and numbers.count(num) == 1
     )
     
     return unique_even_sum

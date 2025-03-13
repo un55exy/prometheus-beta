@@ -16,15 +16,16 @@ def sum_unique_even_numbers(numbers):
         >>> sum_unique_even_numbers([2, 4, 6, 2, 4])
         0
     """
-    # Count occurrences of each number
-    number_counts = {}
+    # Group even and odd numbers
+    unique_even_map = {}
     for num in numbers:
-        number_counts[num] = number_counts.get(num, 0) + 1
+        if num % 2 == 0:
+            unique_even_map[num] = unique_even_map.get(num, 0) + 1
     
-    # Sum unique even numbers (occurring exactly once)
+    # Sum only unique even numbers
     unique_even_sum = sum(
-        num for num in numbers 
-        if num % 2 == 0 and numbers.count(num) == 1
+        num for num, count in unique_even_map.items() 
+        if count == 1
     )
     
     return unique_even_sum

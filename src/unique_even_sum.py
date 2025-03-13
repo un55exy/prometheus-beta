@@ -23,7 +23,7 @@ def sum_unique_even_numbers(numbers):
     
     # Sum unique even numbers
     unique_even_sum = sum(
-        num for num in set(numbers)  # Use set to ensure unique numbers
+        num for num in numbers 
         if num % 2 == 0 and number_counts[num] == 1
     )
     

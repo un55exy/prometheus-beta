@@ -3,7 +3,7 @@ from src.find_most_frequent import find_most_frequent_index
 
 def test_basic_functionality():
     """Test basic cases with clear most frequent element"""
-    assert find_most_frequent_index([1, 2, 2, 3, 3, 3]) == 2
+    assert find_most_frequent_index([1, 2, 2, 3, 3, 3]) == 3
     assert find_most_frequent_index([3, 3, 1, 1, 2]) == 0
 
 def test_tie_breaker():

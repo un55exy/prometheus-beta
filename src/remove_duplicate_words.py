@@ -16,6 +16,10 @@ def remove_duplicate_words(text):
         >>> remove_duplicate_words("")
         ''
     """
+    # Validate input is a string
+    if not isinstance(text, str):
+        raise AttributeError("Input must be a string")
+    
     # Handle empty string case
     if not text:
         return ""
@@ -28,10 +32,11 @@ def remove_duplicate_words(text):
     unique_words = []
     
     for word in words:
-        # Only add word if it hasn't been seen before
-        if word not in seen_words:
+        # Only add word if it hasn't been seen before (case-insensitive)
+        word_lower = word.lower()
+        if word_lower not in seen_words:
             unique_words.append(word)
-            seen_words.add(word)
+            seen_words.add(word_lower)
     
     # Join the unique words back into a string
     return " ".join(unique_words)

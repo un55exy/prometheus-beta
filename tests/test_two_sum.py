@@ -32,6 +32,7 @@ def test_two_sum_zero_target():
 def test_two_sum_large_list():
     """Test with a large list"""
     large_list = list(range(1000))
+    # Looking for 997 + 1001 = 1998
     assert two_sum(large_list, 1998) == True
 
 def test_two_sum_no_solution():

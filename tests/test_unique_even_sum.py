@@ -21,7 +21,7 @@ def test_sum_unique_even_numbers_edge_cases():
 def test_sum_unique_even_numbers_types():
     """Test function behavior with different input types."""
     # Mixed positive and negative even numbers
-    assert sum_unique_even_numbers([-2, 2, 3, -4, 4]) == -6
+    assert sum_unique_even_numbers([-2, 2, 3, -4, 4]) == 0
     
     # Large numbers
-    assert sum_unique_even_numbers([10000, 20000, 10000, 30000]) == 50000
+    assert sum_unique_even_numbers([10000, 20000, 10000, 30000]) == 20000

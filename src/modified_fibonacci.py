@@ -22,21 +22,19 @@ def generate_modified_fibonacci(n):
     if n == 2:
         return [1, 1]
 
-    # Start with pre-computed sequence that satisfies divisibility
-    if n == 3:
-        return [1, 1, 3]
-    if n == 4:
-        return [1, 1, 3, 5]
-    if n == 5:
-        return [1, 1, 3, 5, 8]
-
     # Start with initial sequence
-    sequence = [1, 1, 3, 5, 8]
+    sequence = [1, 1]
 
-    # Extend sequence as needed
     while len(sequence) < n:
-        # Compute next number by a custom rule to maintain divisibility
-        next_num = 3 - (sequence[-1] + sequence[-2]) % 3 + sequence[-1] + sequence[-2]
+        # First two sequences are unique
+        if len(sequence) == 2:
+            next_num = 3
+        else:
+            # Modify sequence to make the sum divisible by 3
+            # We do this by adding the amount needed to make the sum a multiple of 3
+            correction = 3 - (sequence[-2] + sequence[-1]) % 3
+            next_num = sequence[-1] + correction
+        
         sequence.append(next_num)
 
     # Ensure exact sequence length

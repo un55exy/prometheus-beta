@@ -23,18 +23,13 @@ def generate_modified_fibonacci(n):
         return [1, 1]
 
     # Start with initial sequence
-    sequence = [1, 1]
+    sequence = [1, 1, 3]
 
+    # Generate sequence while modifying to meet divisibility condition
     while len(sequence) < n:
-        # First two sequences are unique
-        if len(sequence) == 2:
-            next_num = 3
-        else:
-            # Modify sequence to make the sum divisible by 3
-            # We do this by adding the amount needed to make the sum a multiple of 3
-            correction = 3 - (sequence[-2] + sequence[-1]) % 3
-            next_num = sequence[-1] + correction
-        
+        # Compute next number to make previous two sums divisible by 3
+        correction = 3 - (sequence[-2] + sequence[-1]) % 3
+        next_num = sequence[-1] + correction
         sequence.append(next_num)
 
     # Ensure exact sequence length

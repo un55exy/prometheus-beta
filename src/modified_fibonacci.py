@@ -28,7 +28,13 @@ def generate_modified_fibonacci(n):
     # Generate sequence while modifying to meet divisibility condition
     while len(sequence) < n:
         # Compute next number to ensure divisibility from 3rd element
-        next_num = 3 - (sequence[-1] + sequence[-2]) % 3 + sequence[-1] + sequence[-2]
+        if len(sequence) == 2:
+            # First modification will make the third number 3
+            next_num = 3
+        else:
+            # Ensure divisibility by adding a correction factor
+            next_num = 3 - (sequence[-1] + sequence[-2]) % 3 + sequence[-1] + sequence[-2]
+        
         sequence.append(next_num)
 
     # Ensure exact sequence length

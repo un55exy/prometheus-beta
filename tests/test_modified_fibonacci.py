@@ -5,7 +5,8 @@ def test_generate_modified_fibonacci_basic():
     """Test basic functionality of the modified Fibonacci sequence."""
     result = generate_modified_fibonacci(5)
     assert len(result) == 5
-    # Check divisibility for elements starting from the 3rd one
+    
+    # For sequences of 3 or more elements, check divisibility starting from the 3rd element
     if len(result) >= 3:
         for i in range(2, len(result)):
             assert (result[i-2] + result[i-1]) % 3 == 0, \
@@ -15,7 +16,7 @@ def test_divisibility_condition():
     """Verify that the sum of consecutive numbers is divisible by 3."""
     sequence = generate_modified_fibonacci(10)
     
-    # Check divisibility for elements starting from the 3rd one
+    # For sequences of 3 or more elements, check divisibility starting from the 3rd element
     if len(sequence) >= 3:
         for i in range(2, len(sequence)):
             assert (sequence[i-2] + sequence[i-1]) % 3 == 0, \

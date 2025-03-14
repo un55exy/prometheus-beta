@@ -23,7 +23,18 @@ def generate_modified_fibonacci(n):
         return [1, 1]
 
     # Start with initial sequence
-    sequence = [1, 1, 3, 5, 8, 13, 21, 34, 55, 89]
+    sequence = [1, 1]
 
-    # Ensure we cut the sequence to the desired length
+    # Generate sequence
+    while len(sequence) < n:
+        # Strategically modify the last two numbers to control divisibility
+        if len(sequence) == 2:
+            next_num = 3  # Ensure divisibility early
+        else:
+            # Modify the next number to make the pair sum divisible by 3
+            next_num = 3 - (sequence[-1] + sequence[-2]) % 3 + sequence[-1]
+        
+        sequence.append(next_num)
+
+    # Ensure exact sequence length
     return sequence[:n]

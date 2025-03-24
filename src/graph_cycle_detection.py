@@ -41,7 +41,7 @@ def detect_cycle_undirected(graph: Dict[int, List[int]]) -> bool:
             if neighbor == parent:
                 continue
             
-            # If neighbor is already visited and is not the parent, we found a cycle
+            # If the neighbor is already visited, we found a back edge (cycle)
             if neighbor in visited:
                 return True
             
@@ -51,14 +51,11 @@ def detect_cycle_undirected(graph: Dict[int, List[int]]) -> bool:
         
         return False
     
-    # Check for cycles starting from each node
+    # Check for cycles starting from each unvisited node
     for node in graph:
-        # If the node is already visited, skip it
-        if node in visited:
-            continue
-        
-        # If a cycle is detected, return True
-        if dfs(node, -1):
-            return True
+        if node not in visited:
+            # If a cycle is detected in any connected component, return True
+            if dfs(node, -1):
+                return True
     
     return False

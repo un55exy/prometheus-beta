@@ -53,9 +53,12 @@ def detect_cycle_undirected(graph: Dict[int, List[int]]) -> bool:
     
     # Check for cycles starting from each unvisited node
     for node in graph:
-        if node not in visited:
-            # If a cycle is detected in any connected component, return True
-            if dfs(node, -1):
-                return True
+        # If the node is already visited, skip it
+        if node in visited:
+            continue
+        
+        # If a cycle is detected in any connected component, return True
+        if dfs(node, -1):
+            return True
     
     return False

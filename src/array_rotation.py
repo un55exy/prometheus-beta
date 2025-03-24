@@ -28,7 +28,7 @@ def rotate_array(arr, n):
         raise ValueError("Rotation amount cannot be negative")
     
     # Normalize n to be within the array length
-    n = n % len(arr) if arr else 0
+    n = n % len(arr)
     
     # Perform rotation
     return arr[-n:] + arr[:-n]

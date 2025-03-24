@@ -4,23 +4,6 @@ import json
 from unittest.mock import Mock, patch
 from src.api_payload_logger import log_api_response_payload_size
 
-class MockResponse:
-    def __init__(self, text=None, content=None, json_data=None):
-        self._text = text
-        self._content = content
-        self._json_data = json_data
-
-    @property
-    def text(self):
-        return self._text
-
-    @property
-    def content(self):
-        return self._content
-
-    def json(self):
-        return self._json_data
-
 def test_log_api_response_payload_size_string():
     # Test with string response
     mock_logger = Mock(spec=logging.Logger)
@@ -45,10 +28,12 @@ def test_log_api_response_payload_size_dict():
 def test_log_api_response_payload_size_requests_response():
     # Test with requests-like response
     test_text = "API Response Content"
-    mock_response = type('MockResponse', (), {
-        'text': test_text,
-        'json': lambda: None
-    })()
+    class MockResponse:
+        def __init__(self):
+            self.text = test_text
+            self.json = lambda: None
+    
+    mock_response = MockResponse()
     mock_logger = Mock(spec=logging.Logger)
     
     result = log_api_response_payload_size(mock_response, logger=mock_logger)
@@ -60,10 +45,12 @@ def test_log_api_response_payload_size_requests_response():
 def test_log_api_response_payload_size_requests_json_response():
     # Test with requests response with json method
     test_json = {"data": "example"}
-    mock_response = type('MockResponse', (), {
-        'text': None,
-        'json': lambda: test_json
-    })()
+    class MockResponse:
+        def __init__(self):
+            self.text = None
+            self.json = lambda: test_json
+    
+    mock_response = MockResponse()
     mock_logger = Mock(spec=logging.Logger)
     
     result = log_api_response_payload_size(mock_response, logger=mock_logger)

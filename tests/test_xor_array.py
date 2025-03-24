@@ -4,7 +4,7 @@ from src.xor_array import xor_array_elements
 def test_xor_array_basic():
     """Test basic XOR operation with simple array"""
     assert xor_array_elements([1, 2, 3]) == 0
-    assert xor_array_elements([5, 7, 2]) == 4
+    assert xor_array_elements([5, 7, 2]) == 0
 
 def test_xor_array_single_element():
     """Test XOR with a single element"""
@@ -28,7 +28,7 @@ def test_xor_array_invalid_input():
 
 def test_xor_array_large_numbers():
     """Test XOR with larger numbers"""
-    assert xor_array_elements([100, 200, 300]) == 200
+    assert xor_array_elements([100, 200, 300]) == 384
 
 def test_xor_array_repeated_elements():
     """Test XOR with repeated elements"""

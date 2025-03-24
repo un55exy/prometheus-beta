@@ -47,8 +47,9 @@ def test_log_api_response_payload_size_requests_response():
     
     result = log_api_response_payload_size(mock_response, logger=mock_logger)
     
-    assert result == len(test_text.encode('utf-8'))
-    mock_logger.info.assert_called_once_with(f"API Response Payload Size: {len(test_text.encode('utf-8'))} bytes")
+    expected_size = len(test_text.encode('utf-8'))
+    assert result == expected_size
+    mock_logger.info.assert_called_once_with(f"API Response Payload Size: {expected_size} bytes")
 
 def test_log_api_response_payload_size_requests_json_response():
     # Test with requests response with json method
@@ -58,7 +59,8 @@ def test_log_api_response_payload_size_requests_json_response():
     
     result = log_api_response_payload_size(mock_response, logger=mock_logger)
     
-    assert result == len(json.dumps(test_json).encode('utf-8'))
+    expected_size = len(json.dumps(test_json).encode('utf-8'))
+    assert result == expected_size
     mock_logger.info.assert_called_once()
 
 def test_log_api_response_payload_size_unsupported_type():

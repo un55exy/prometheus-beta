@@ -10,14 +10,14 @@ class ColorLogger:
     
     # ANSI background color codes
     BG_COLORS = {
-        'red': '\033[41m',
-        'green': '\033[42m',
-        'yellow': '\033[43m',
-        'blue': '\033[44m',
-        'magenta': '\033[45m',
-        'cyan': '\033[46m',
-        'white': '\033[47m',
-        'reset': '\033[0m'
+        'red': '\x1b[41m',
+        'green': '\x1b[42m',
+        'yellow': '\x1b[43m',
+        'blue': '\x1b[44m',
+        'magenta': '\x1b[45m',
+        'cyan': '\x1b[46m',
+        'white': '\x1b[47m',
+        'reset': '\x1b[0m'
     }
     
     @classmethod
@@ -46,13 +46,13 @@ class ColorLogger:
         text_prefix = ''
         if text_color:
             text_color_codes = {
-                'red': '\033[31m',
-                'green': '\033[32m',
-                'yellow': '\033[33m',
-                'blue': '\033[34m',
-                'magenta': '\033[35m',
-                'cyan': '\033[36m',
-                'white': '\033[37m'
+                'red': '\x1b[31m',
+                'green': '\x1b[32m',
+                'yellow': '\x1b[33m',
+                'blue': '\x1b[34m',
+                'magenta': '\x1b[35m',
+                'cyan': '\x1b[36m',
+                'white': '\x1b[37m'
             }
             if text_color not in text_color_codes:
                 raise ValueError(f"Invalid text color. Choose from {list(text_color_codes.keys())}")

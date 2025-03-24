@@ -10,14 +10,14 @@ class ColorLogger:
     
     # ANSI background color codes
     BG_COLORS = {
-        'red': '\x1b[41m',
-        'green': '\x1b[42m',
-        'yellow': '\x1b[43m',
-        'blue': '\x1b[44m',
-        'magenta': '\x1b[45m',
-        'cyan': '\x1b[46m',
-        'white': '\x1b[47m',
-        'reset': '\x1b[0m'
+        'red': '[41m',
+        'green': '[42m',
+        'yellow': '[43m',
+        'blue': '[44m',
+        'magenta': '[45m',
+        'cyan': '[46m',
+        'white': '[47m',
+        'reset': '[0m'
     }
     
     @classmethod
@@ -39,24 +39,24 @@ class ColorLogger:
             raise ValueError(f"Invalid background color. Choose from {list(cls.BG_COLORS.keys())}")
         
         # Construct color formatting
-        bg_code = cls.BG_COLORS.get(bg_color, '')
-        reset_code = cls.BG_COLORS['reset']
+        bg_code = '\x1b' + cls.BG_COLORS.get(bg_color, '')
+        reset_code = '\x1b' + cls.BG_COLORS['reset']
         
         # Optional text color formatting (basic implementation)
         text_prefix = ''
         if text_color:
             text_color_codes = {
-                'red': '\x1b[31m',
-                'green': '\x1b[32m',
-                'yellow': '\x1b[33m',
-                'blue': '\x1b[34m',
-                'magenta': '\x1b[35m',
-                'cyan': '\x1b[36m',
-                'white': '\x1b[37m'
+                'red': '[31m',
+                'green': '[32m',
+                'yellow': '[33m',
+                'blue': '[34m',
+                'magenta': '[35m',
+                'cyan': '[36m',
+                'white': '[37m'
             }
             if text_color not in text_color_codes:
                 raise ValueError(f"Invalid text color. Choose from {list(text_color_codes.keys())}")
-            text_prefix = text_color_codes[text_color]
+            text_prefix = '\x1b' + text_color_codes[text_color]
         
         # Combine formatting and message
         formatted_message = f"{bg_code}{text_prefix}{message}{reset_code}\n"

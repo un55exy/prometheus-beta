@@ -27,8 +27,9 @@ def test_log_api_response_payload_size_string():
     test_str = "Hello, World!"
     result = log_api_response_payload_size(test_str, logger=mock_logger)
     
-    assert result == len(test_str.encode('utf-8'))
-    mock_logger.info.assert_called_once_with(f"API Response Payload Size: {len(test_str.encode('utf-8'))} bytes")
+    expected_size = len(test_str.encode('utf-8'))
+    assert result == expected_size
+    mock_logger.info.assert_called_once_with(f"API Response Payload Size: {expected_size} bytes")
 
 def test_log_api_response_payload_size_dict():
     # Test with dictionary response
@@ -44,7 +45,10 @@ def test_log_api_response_payload_size_dict():
 def test_log_api_response_payload_size_requests_response():
     # Test with requests-like response
     test_text = "API Response Content"
-    mock_response = MockResponse(text=test_text)
+    mock_response = type('MockResponse', (), {
+        'text': test_text,
+        'json': lambda: None
+    })()
     mock_logger = Mock(spec=logging.Logger)
     
     result = log_api_response_payload_size(mock_response, logger=mock_logger)
@@ -56,7 +60,10 @@ def test_log_api_response_payload_size_requests_response():
 def test_log_api_response_payload_size_requests_json_response():
     # Test with requests response with json method
     test_json = {"data": "example"}
-    mock_response = MockResponse(json_data=test_json)
+    mock_response = type('MockResponse', (), {
+        'text': None,
+        'json': lambda: test_json
+    })()
     mock_logger = Mock(spec=logging.Logger)
     
     result = log_api_response_payload_size(mock_response, logger=mock_logger)

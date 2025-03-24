@@ -1,4 +1,4 @@
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Set
 
 def detect_cycle_undirected(graph: Dict[int, List[int]]) -> bool:
     """
@@ -18,45 +18,56 @@ def detect_cycle_undirected(graph: Dict[int, List[int]]) -> bool:
     if not graph:
         raise ValueError("Graph cannot be empty")
     
-    # Set to keep track of visited nodes
-    visited: Set[int] = set()
-    
-    def has_cycle_dfs(node: int, parent: int) -> bool:
+    def detect_cycle_dfs(graph_component: Dict[int, List[int]]) -> bool:
         """
-        Depth-First Search to detect cycle in a graph.
+        Detect cycle in a single connected component.
         
         Args:
-            node (int): Current node being explored
-            parent (int): Parent node of the current node
+            graph_component (Dict[int, List[int]]): A connected component of the graph
         
         Returns:
-            bool: True if a cycle is detected, False otherwise
+            bool: True if the component contains a cycle, False otherwise
         """
-        # Mark the current node as visited
-        visited.add(node)
+        # Set to keep track of visited nodes
+        visited: Set[int] = set()
         
-        # Explore all adjacent nodes
-        for neighbor in graph.get(node, []):
-            # Skip the parent node to avoid false cycle detection
-            if neighbor == parent:
-                continue
+        def dfs(node: int, parent: int) -> bool:
+            """
+            Depth-First Search to detect cycle in a graph component.
             
-            # If the neighbor is already visited, we found a cycle
-            if neighbor in visited:
-                return True
+            Args:
+                node (int): Current node being explored
+                parent (int): Parent node of the current node
             
-            # Recursively explore the neighbor
-            if has_cycle_dfs(neighbor, node):
-                return True
+            Returns:
+                bool: True if a cycle is detected, False otherwise
+            """
+            # Mark the current node as visited
+            visited.add(node)
+            
+            # Explore all adjacent nodes
+            for neighbor in graph_component.get(node, []):
+                # Skip the parent node to avoid false cycle detection
+                if neighbor == parent:
+                    continue
+                
+                # If the neighbor is already visited, we found a cycle
+                if neighbor in visited:
+                    return True
+                
+                # Recursively explore the neighbor
+                if dfs(neighbor, node):
+                    return True
+            
+            return False
+        
+        # Check for cycles starting from each unvisited node
+        for node in graph_component:
+            if node not in visited:
+                if dfs(node, -1):
+                    return True
         
         return False
     
-    # Check for cycles in every connected component
-    for node in graph:
-        # If this node is not visited, explore its entire component
-        if node not in visited:
-            # If a cycle is found in this component, return True
-            if has_cycle_dfs(node, -1):
-                return True
-    
-    return False
+    # Check if any component has a cycle
+    return detect_cycle_dfs(graph)

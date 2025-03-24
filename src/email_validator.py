@@ -15,6 +15,7 @@ def validate_email_format(email: str) -> bool:
     - Must have a domain name after the '@' symbol
     - Username can contain letters, numbers, dots, underscores, and hyphens
     - Domain must have at least one dot, no consecutive dots
+    - Top-level domain is limited to 63 characters
     - Total length constraints
     """
     # Check if email is a string and not empty
@@ -22,7 +23,7 @@ def validate_email_format(email: str) -> bool:
         return False
     
     # Regular expression for email validation with stricter domain checks
-    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z]{2,})+$'
+    email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z]{2,63})+$'
     
     # Check overall email format
     if not re.match(email_regex, email):
@@ -41,6 +42,11 @@ def validate_email_format(email: str) -> bool:
     
     # Check domain length
     if len(domain) > 255:
+        return False
+    
+    # Additional check for top-level domain length
+    top_level_domain = domain.split('.')[-1]
+    if len(top_level_domain) > 63:
         return False
     
     return True

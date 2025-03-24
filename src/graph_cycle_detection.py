@@ -1,8 +1,8 @@
-from typing import Dict, List, Set
+from typing import Dict, List, Set, Tuple
 
 def detect_cycle_undirected(graph: Dict[int, List[int]]) -> bool:
     """
-    Detect if an undirected graph contains a cycle using Depth-First Search (DFS).
+    Detect if an undirected graph contains a cycle using Union-Find algorithm.
     
     Args:
         graph (Dict[int, List[int]]): An adjacency list representation of the graph
@@ -18,45 +18,71 @@ def detect_cycle_undirected(graph: Dict[int, List[int]]) -> bool:
     if not graph:
         raise ValueError("Graph cannot be empty")
     
-    # Set to keep track of visited nodes
-    visited: Set[int] = set()
+    # Initialize parent and rank for Union-Find
+    parent: Dict[int, int] = {}
+    rank: Dict[int, int] = {}
     
-    def dfs(node: int, parent: int) -> bool:
+    # Initialize parent and rank for each node
+    for node in graph:
+        parent[node] = node
+        rank[node] = 0
+    
+    def find(x: int) -> int:
         """
-        Depth-First Search to detect cycle.
+        Find the root of a node with path compression.
         
         Args:
-            node (int): Current node being explored
-            parent (int): Parent node of the current node
+            x (int): Node to find the root for
         
         Returns:
-            bool: True if a cycle is detected, False otherwise
+            int: Root of the node
         """
-        # Mark the current node as visited
-        visited.add(node)
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+    
+    def union(x: int, y: int) -> bool:
+        """
+        Union two sets. 
         
-        # Explore all adjacent nodes
-        for neighbor in graph.get(node, []):
-            # Skip the parent node to avoid false cycle detection
-            if neighbor == parent:
-                continue
-            
-            # If the neighbor is already visited, we found a back edge (cycle)
-            if neighbor in visited:
-                return True
-            
-            # Recursively explore the neighbor
-            if dfs(neighbor, node):
-                return True
+        Args:
+            x (int): First node
+            y (int): Second node
+        
+        Returns:
+            bool: True if a cycle is formed, False otherwise
+        """
+        root_x = find(x)
+        root_y = find(y)
+        
+        # If roots are the same, a cycle is found
+        if root_x == root_y:
+            return True
+        
+        # Union by rank
+        if rank[root_x] < rank[root_y]:
+            root_x, root_y = root_y, root_x
+        
+        parent[root_y] = root_x
+        
+        if rank[root_x] == rank[root_y]:
+            rank[root_x] += 1
         
         return False
     
-    # Check for cycles in every connected component
-    for node in graph:
-        # If this node is not visited, explore its entire component
-        if node not in visited:
-            # If a cycle is found in this component, return True
-            if dfs(node, -1):
+    # Check for cycles by checking all unique edges
+    processed_edges: Set[Tuple[int, int]] = set()
+    
+    for node, neighbors in graph.items():
+        for neighbor in neighbors:
+            # Avoid processing the same edge twice
+            if (neighbor, node) in processed_edges:
+                continue
+            
+            # If union finds an existing connection, a cycle exists
+            if union(node, neighbor):
                 return True
+            
+            processed_edges.add((node, neighbor))
     
     return False

@@ -47,8 +47,8 @@ def test_disconnected_graph_with_cycle_one_component():
     """Test a disconnected graph with a cycle in the first component."""
     graph = {
         0: [1],
-        1: [0],
-        2: [3],
+        1: [0, 2],
+        2: [1],
         3: [4],
         4: [] 
     }

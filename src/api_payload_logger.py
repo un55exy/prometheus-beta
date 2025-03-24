@@ -26,25 +26,32 @@ def log_api_response_payload_size(response: Any, logger: Optional[logging.Logger
         logger = logging.getLogger(caller_module)
 
     try:
+        # Helper function to safely calculate payload size
+        def calculate_payload_size(payload):
+            if payload is None:
+                return 0
+            if isinstance(payload, (bytes, bytearray)):
+                return len(payload)
+            return len(str(payload).encode('utf-8'))
+
         # Attempt to get payload size based on different response types
         if hasattr(response, 'json') and callable(response.json):
             # For responses with json method (like requests)
             payload = json.dumps(response.json())
-            payload_size = len(payload.encode('utf-8'))
+            payload_size = calculate_payload_size(payload)
         elif hasattr(response, 'text'):
             # For requests library responses with text
-            # Ensure we handle None texts
-            text = response.text or ''
-            payload_size = len(text.encode('utf-8'))
+            payload_size = calculate_payload_size(response.text)
         elif hasattr(response, 'content'):
             # For requests library raw content
-            payload_size = len(response.content)
+            payload_size = calculate_payload_size(response.content)
         elif isinstance(response, str):
             # For string responses
-            payload_size = len(response.encode('utf-8'))
+            payload_size = calculate_payload_size(response)
         elif isinstance(response, dict):
             # For dictionary responses
-            payload_size = len(json.dumps(response).encode('utf-8'))
+            payload = json.dumps(response)
+            payload_size = calculate_payload_size(payload)
         else:
             # Raise TypeError for unsupported types
             raise TypeError(f"Unsupported response type: {type(response)}")

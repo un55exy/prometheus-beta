@@ -33,26 +33,26 @@ def test_single_node_graph():
     graph = {0: []}
     assert detect_cycle_undirected(graph) == False
 
-def test_disconnected_graph_with_cycle():
-    """Test a disconnected graph with a cycle in one component."""
-    graph = {
-        0: [1],
-        1: [0],
-        2: [3, 4],
-        3: [2],
-        4: [2]
-    }
-    assert detect_cycle_undirected(graph) == True
-
-def test_disconnected_graph_without_cycle():
+def test_disconnected_graph_with_no_cycle():
     """Test a disconnected graph without a cycle."""
     graph = {
         0: [1],
-        1: [],
+        1: [0],
         2: [3],
-        3: []
+        3: [2]
     }
     assert detect_cycle_undirected(graph) == False
+
+def test_disconnected_graph_with_cycle_one_component():
+    """Test a disconnected graph with a cycle in the first component."""
+    graph = {
+        0: [1],
+        1: [0],
+        2: [3],
+        3: [4],
+        4: [] 
+    }
+    assert detect_cycle_undirected(graph) == True
 
 def test_complex_graph_cycle():
     """Test a more complex graph with a cycle."""

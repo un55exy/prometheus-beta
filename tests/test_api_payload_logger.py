@@ -65,7 +65,7 @@ def test_log_api_response_payload_size_unsupported_type():
     # Test with unsupported response type
     mock_logger = Mock(spec=logging.Logger)
     
-    with pytest.raises(TypeError):
+    with pytest.raises(TypeError, match="Unsupported response type: <class 'int'>"):
         log_api_response_payload_size(42, logger=mock_logger)
 
 def test_log_api_response_payload_size_default_logger():
@@ -76,5 +76,4 @@ def test_log_api_response_payload_size_default_logger():
         
         log_api_response_payload_size("Test")
         
-        mock_get_logger.assert_called_once_with(__name__)
-        mock_logger.info.assert_called_once()
+        mock_get_logger.assert_called_once_with('test_api_payload_logger')

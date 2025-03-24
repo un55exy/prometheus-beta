@@ -8,35 +8,35 @@ def test_log_default_color(capsys):
     ColorLogger.log("Test Message")
     captured = capsys.readouterr()
     
-    assert b'\x1b[47m'.decode() in captured.out
+    assert "\033[47m" in captured.out
     assert "Test Message" in captured.out
-    assert b'\x1b[0m'.decode() in captured.out
+    assert "\033[0m" in captured.out
 
 def test_log_custom_background(capsys):
     """Test logging with custom background color"""
     ColorLogger.log("Test Message", bg_color='blue')
     captured = capsys.readouterr()
     
-    assert b'\x1b[44m'.decode() in captured.out
+    assert "\033[44m" in captured.out
     assert "Test Message" in captured.out
-    assert b'\x1b[0m'.decode() in captured.out
+    assert "\033[0m" in captured.out
 
 def test_log_with_text_color(capsys):
     """Test logging with text color"""
     ColorLogger.log("Test Message", bg_color='green', text_color='red')
     captured = capsys.readouterr()
     
-    assert b'\x1b[42m'.decode() in captured.out
-    assert b'\x1b[31m'.decode() in captured.out
+    assert "\033[42m" in captured.out
+    assert "\033[31m" in captured.out
     assert "Test Message" in captured.out
-    assert b'\x1b[0m'.decode() in captured.out
+    assert "\033[0m" in captured.out
 
 def test_debug_method(capsys):
     """Test debug method with default color"""
     ColorLogger.debug("Debug Message")
     captured = capsys.readouterr()
     
-    assert b'\x1b[46m'.decode() in captured.out
+    assert "\033[46m" in captured.out
     assert "Debug Message" in captured.out
 
 def test_error_method(capsys):
@@ -44,7 +44,7 @@ def test_error_method(capsys):
     ColorLogger.error("Error Message")
     captured = capsys.readouterr()
     
-    assert b'\x1b[41m'.decode() in captured.err
+    assert "\033[41m" in captured.err
     assert "Error Message" in captured.err
 
 def test_invalid_background_color():

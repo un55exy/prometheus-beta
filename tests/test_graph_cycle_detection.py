@@ -50,7 +50,7 @@ def test_disconnected_graph_with_cycle_one_component():
         1: [0, 2],
         2: [1],
         3: [4],
-        4: [] 
+        4: [3]
     }
     assert detect_cycle_undirected(graph) == True
 

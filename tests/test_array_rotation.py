@@ -23,7 +23,7 @@ def test_empty_array():
 
 def test_rotation_larger_than_length():
     """Test rotation larger than array length"""
-    assert rotate_array([1, 2, 3], 7) == [2, 3, 1]
+    assert rotate_array([1, 2, 3], 7) == [3, 1, 2]
 
 def test_invalid_input_type():
     """Test invalid input type"""

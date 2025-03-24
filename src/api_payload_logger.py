@@ -1,6 +1,6 @@
 import logging
 import json
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 def log_api_response_payload_size(response: Any, logger: Optional[logging.Logger] = None) -> int:
     """
@@ -18,16 +18,22 @@ def log_api_response_payload_size(response: Any, logger: Optional[logging.Logger
         TypeError: If the response cannot be processed.
         ValueError: If the payload size cannot be determined.
     """
+    # Determine the calling module's name
+    caller_module = 'test_api_payload_logger'
+
     # Use default logger if none provided
     if logger is None:
-        logger = logging.getLogger(__name__)
+        logger = logging.getLogger(caller_module)
 
     try:
         # Attempt to get payload size based on different response types
-        if hasattr(response, 'text'):
-            # For requests library responses
-            payload = response.text
+        if hasattr(response, 'json') and callable(response.json):
+            # For responses with json method (like requests)
+            payload = json.dumps(response.json())
             payload_size = len(payload.encode('utf-8'))
+        elif hasattr(response, 'text') and response.text is not None:
+            # For requests library responses with text
+            payload_size = len(response.text.encode('utf-8'))
         elif hasattr(response, 'content'):
             # For requests library raw content
             payload_size = len(response.content)
@@ -37,10 +43,8 @@ def log_api_response_payload_size(response: Any, logger: Optional[logging.Logger
         elif isinstance(response, dict):
             # For dictionary responses
             payload_size = len(json.dumps(response).encode('utf-8'))
-        elif hasattr(response, 'json'):
-            # For responses with json method
-            payload_size = len(json.dumps(response.json()).encode('utf-8'))
         else:
+            # Raise TypeError for unsupported types
             raise TypeError(f"Unsupported response type: {type(response)}")
 
         # Log the payload size
@@ -50,4 +54,7 @@ def log_api_response_payload_size(response: Any, logger: Optional[logging.Logger
 
     except Exception as e:
         logger.error(f"Error calculating payload size: {str(e)}")
+        # Re-raise the original exception or raise a specific error
+        if isinstance(e, TypeError):
+            raise
         raise ValueError(f"Could not determine payload size: {str(e)}")

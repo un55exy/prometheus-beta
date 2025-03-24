@@ -31,9 +31,11 @@ def log_api_response_payload_size(response: Any, logger: Optional[logging.Logger
             # For responses with json method (like requests)
             payload = json.dumps(response.json())
             payload_size = len(payload.encode('utf-8'))
-        elif hasattr(response, 'text') and response.text is not None:
+        elif hasattr(response, 'text'):
             # For requests library responses with text
-            payload_size = len(response.text.encode('utf-8'))
+            # Ensure we handle None texts
+            text = response.text or ''
+            payload_size = len(text.encode('utf-8'))
         elif hasattr(response, 'content'):
             # For requests library raw content
             payload_size = len(response.content)

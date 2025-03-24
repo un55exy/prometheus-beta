@@ -33,8 +33,8 @@ def test_single_node_graph():
     graph = {0: []}
     assert detect_cycle_undirected(graph) == False
 
-def test_disconnected_graph_with_no_cycle():
-    """Test a disconnected graph without a cycle."""
+def test_disconnected_graph_with_two_node_cycle():
+    """Test a disconnected graph with a cycle in the first component."""
     graph = {
         0: [1],
         1: [0],

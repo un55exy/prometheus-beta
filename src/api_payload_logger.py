@@ -1,6 +1,6 @@
 import logging
 import json
-from typing import Any, Optional
+from typing import Any, Optional, Callable
 
 def log_api_response_payload_size(response: Any, logger: Optional[logging.Logger] = None) -> int:
     """
@@ -26,11 +26,24 @@ def log_api_response_payload_size(response: Any, logger: Optional[logging.Logger
         logger = logging.getLogger(caller_module)
 
     try:
+        # Helper to safely call json method
+        def safe_json_call(json_method: Optional[Callable]) -> Optional[Any]:
+            try:
+                return json_method() if json_method is not None else None
+            except TypeError:
+                return None
+
         # Attempt to get payload size based on different response types
         if hasattr(response, 'json') and callable(response.json):
             # For responses with json method (like requests)
-            payload = json.dumps(response.json())
-            payload_size = len(payload.encode('utf-8'))
+            json_data = safe_json_call(response.json)
+            if json_data is not None:
+                payload = json.dumps(json_data)
+                payload_size = len(payload.encode('utf-8'))
+            else:
+                # Fall back to text if json is None
+                text = response.text or ''
+                payload_size = len(text.encode('utf-8'))
         elif hasattr(response, 'text'):
             # For requests library responses with text
             text = response.text or ''

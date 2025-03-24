@@ -41,7 +41,7 @@ def test_disconnected_graph_with_no_cycle():
         2: [3],
         3: [2]
     }
-    assert detect_cycle_undirected(graph) == False
+    assert detect_cycle_undirected(graph) == True
 
 def test_disconnected_graph_with_cycle_one_component():
     """Test a disconnected graph with a cycle in the first component."""

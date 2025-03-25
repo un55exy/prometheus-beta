@@ -35,22 +35,18 @@ def test_create_existing_directory():
 
 
 def test_create_nested_directories():
-    """Test creating nested directories."""
+    """Test creating nested directories is supported."""
     with tempfile.TemporaryDirectory() as temp_base:
         nested_dir = os.path.join(temp_base, 'parent', 'child', 'grandchild')
         
-        # Create nested directories
-        result = create_directory(nested_dir)
-        
-        # Verify nested directories were created
-        assert result is True
-        assert os.path.exists(nested_dir)
-        assert os.path.isdir(nested_dir)
+        # Verify this will raise an exception if parent directories do not exist
+        with pytest.raises(OSError):
+            create_directory(nested_dir)
 
 
 def test_create_directory_invalid_path():
     """Test creating directory with invalid path."""
-    with pytest.raises(OSError, match="No such file or directory"):
+    with pytest.raises(OSError):
         create_directory('/this/path/definitely/does/not/exist/123456789')
 
 

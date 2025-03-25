@@ -35,12 +35,12 @@ def test_create_existing_directory():
 
 
 def test_create_nested_directories():
-    """Test creating nested directories is supported."""
+    """Test creating nested directories raises an error if parent does not exist."""
     with tempfile.TemporaryDirectory() as temp_base:
         nested_dir = os.path.join(temp_base, 'parent', 'child', 'grandchild')
         
         # Verify this will raise an exception if parent directories do not exist
-        with pytest.raises(OSError):
+        with pytest.raises(OSError, match="Parent directory does not exist"):
             create_directory(nested_dir)
 
 

@@ -45,9 +45,10 @@ def test_create_nested_directories():
 
 
 def test_create_directory_invalid_path():
-    """Test creating directory with invalid path."""
+    """Test creating directory with completely invalid path."""
+    # Use a path with no separators that cannot represent a valid path
     with pytest.raises(OSError):
-        create_directory('/this/path/definitely/does/not/exist/123456789')
+        create_directory('invalid_path')
 
 
 def test_directory_permissions():

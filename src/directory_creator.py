@@ -22,6 +22,10 @@ def create_directory(path: str, mode: int = 0o755) -> bool:
         # Expand and normalize the path
         full_path = os.path.abspath(os.path.expanduser(path))
         
+        # Validate path
+        if not os.path.dirname(full_path):
+            raise OSError(f"Invalid path: {full_path}")
+        
         # Check parent directories exist
         parent_dir = os.path.dirname(full_path)
         if not os.path.exists(parent_dir):

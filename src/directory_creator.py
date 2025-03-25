@@ -19,12 +19,12 @@ def create_directory(path: str, mode: int = 0o755) -> bool:
         OSError: For other OS-related errors during directory creation.
     """
     try:
+        # Validate path has at least one separator
+        if '/' not in path and '\\' not in path:
+            raise OSError(f"Invalid path: {path}")
+        
         # Expand and normalize the path
         full_path = os.path.abspath(os.path.expanduser(path))
-        
-        # Validate path
-        if not os.path.dirname(full_path):
-            raise OSError(f"Invalid path: {full_path}")
         
         # Check parent directories exist
         parent_dir = os.path.dirname(full_path)

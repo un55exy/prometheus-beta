@@ -50,8 +50,8 @@ def test_create_nested_directories():
 
 def test_create_directory_invalid_path():
     """Test creating directory with invalid path."""
-    with pytest.raises(OSError):
-        create_directory('/nonexistent/parent/path/to/directory')
+    with pytest.raises(OSError, match="No such file or directory"):
+        create_directory('/this/path/definitely/does/not/exist/123456789')
 
 
 def test_directory_permissions():

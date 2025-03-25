@@ -22,17 +22,12 @@ def create_directory(path: str, mode: int = 0o755) -> bool:
         # Expand and normalize the path
         full_path = os.path.abspath(os.path.expanduser(path))
         
-        # Check parent directory exists
-        parent_dir = os.path.dirname(full_path)
-        if not os.path.exists(parent_dir):
-            raise OSError(f"Parent directory does not exist: {parent_dir}")
-        
         # Check if directory already exists
         if os.path.exists(full_path):
             return False
         
         # Create directory with specified mode
-        os.makedirs(full_path, mode=mode)
+        os.makedirs(full_path, mode=mode, exist_ok=False)
         return True
     
     except PermissionError:
